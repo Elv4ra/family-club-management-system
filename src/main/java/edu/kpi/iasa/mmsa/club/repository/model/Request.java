@@ -30,7 +30,7 @@ public class Request {
     public Request() {
     }
 
-    public Request(Integer idAuthor, String objectOfChanging, String description, String status, Integer idModifier) {
+    public Request(Integer idAuthor, String objectOfChanging, String description, String status, Integer idModifier) throws IllegalArgumentException {
         this.idAuthor = idAuthor;
         this.objectOfChanging = objectOfChanging;
         this.description = description;

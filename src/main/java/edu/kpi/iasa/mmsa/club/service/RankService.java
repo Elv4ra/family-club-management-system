@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class RankService {
 
     private final RankRepository rankRepository;
+
+    public RankService(RankRepository rankRepository) {
+        this.rankRepository = rankRepository;
+    }
 
     public List<Rank> getAllRanks() {
         return rankRepository.findAll();
@@ -38,7 +41,7 @@ public class RankService {
     public Rank updateRank(long id, Rank updatedRank) {
         Optional<Rank> oldRank = rankRepository.findById(id);
         if (oldRank.isPresent()) {
-            oldRank.get().setRankName(updatedRank.getRankName());
+            oldRank.get().setRankName(updatedRank);
             return  rankRepository.save(oldRank.get());
         }
         throw  new RankNotFoundException();

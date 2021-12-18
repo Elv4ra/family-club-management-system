@@ -45,7 +45,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String eventName, Integer idRank, Integer idOrganizer, Date date, String duration, Double cost, String place, Integer freeSpots, Integer occupiedSpots) {
+    public Event(String eventName, Integer idRank, Integer idOrganizer, Date date, String duration, Double cost, String place, Integer freeSpots, Integer occupiedSpots) throws IllegalArgumentException {
         this.eventName = eventName;
         this.idRank = idRank;
         this.idOrganizer = idOrganizer;

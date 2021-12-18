@@ -1,8 +1,8 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
 import javax.persistence.*;
-//import javax.validation.constraints.NotBlank;
-import java.sql.Date;
+import javax.validation.constraints.NotBlank;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "members")
@@ -12,42 +12,41 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    //@NotBlank(message = "Login cannot be empty")
+    @NotBlank(message = "Login cannot be empty")
     @Column(unique = true)
     private String login;
 
-    //@NotBlank(message = "Password cannot be empty")
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    //@NotBlank(message = "Name cannot be empty")
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
-    //@NotBlank(message = "Alias cannot be empty")
+    @NotBlank(message = "Alias cannot be empty")
     private String alias;
 
-    private Integer rank;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rank")
+    private Rank rank = new Rank(1, "Bronze");
 
-    //@NotBlank(message = "Phone cannot be empty")
+    @NotBlank(message = "Phone cannot be empty")
     private String phone;
 
     @Column(name = "is_active")
-    private Boolean isActiveMember;
+    private Boolean isActiveMember = true;
 
     @Column(name = "date_joining")
-    private Date joiningDate;
+    private Timestamp joiningDate = new Timestamp(System.currentTimeMillis());
 
     public Member() {
     }
 
-    public Member(String login, String password, String name, String alias, Integer rank, String phone, Boolean isActiveMember, Date joiningDate) {
+    public Member(String login, String password, String name, String alias, String phone) throws IllegalArgumentException{
         this.login = login;
         this.password = password;
         this.name = name;
         this.alias = alias;
-        this.rank = rank;
         this.phone = phone;
-        this.isActiveMember = isActiveMember;
-        this.joiningDate = joiningDate;
     }
 
     public long getId() {
@@ -86,11 +85,11 @@ public class Member {
         this.alias = alias;
     }
 
-    public Integer getRank() {
+    public Rank getRank() {
         return rank;
     }
 
-    public void setRank(Integer rank) {
+    public void setRank(Rank rank) {
         this.rank = rank;
     }
 
@@ -110,11 +109,11 @@ public class Member {
         isActiveMember = activeMember;
     }
 
-    public Date getJoiningDate() {
+    public Timestamp getJoiningDate() {
         return joiningDate;
     }
 
-    public void setJoiningDate(Date joiningDate) {
+    public void setJoiningDate(Timestamp joiningDate) {
         this.joiningDate = joiningDate;
     }
 }

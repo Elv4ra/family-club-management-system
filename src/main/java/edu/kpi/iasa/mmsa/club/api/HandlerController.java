@@ -1,15 +1,14 @@
 package edu.kpi.iasa.mmsa.club.api;
 
-import edu.kpi.iasa.mmsa.club.exception.RankAlreadyExistsException;
-import edu.kpi.iasa.mmsa.club.exception.RankNotFoundException;
-import edu.kpi.iasa.mmsa.club.exception.RoleAlreadyExistsException;
-import edu.kpi.iasa.mmsa.club.exception.RoleNotFoundException;
+import edu.kpi.iasa.mmsa.club.exception.*;
 import edu.kpi.iasa.mmsa.club.repository.model.Error;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
 public class HandlerController {
@@ -32,7 +31,7 @@ public class HandlerController {
             = { RoleAlreadyExistsException.class })
     protected ResponseEntity<Error> handleConflict(
             RoleAlreadyExistsException ex, WebRequest request) {
-        Error error = Error.builder().code("BAD_REQUEST").description("This Role Already Exists").build();
+        Error error = Error.builder().code("BAD_REQUEST").description("Role With This Name Already Exists").build();
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -48,7 +47,39 @@ public class HandlerController {
             = { RankAlreadyExistsException.class })
     protected ResponseEntity<Error> handleConflict(
             RankAlreadyExistsException ex, WebRequest request) {
-        Error error = Error.builder().code("BAD_REQUEST").description("This Rank Already Exists").build();
+        Error error = Error.builder().code("BAD_REQUEST").description("Rank With This Name Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { MemberNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            MemberNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Member Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { MemberAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            MemberAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Member With This Login Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { IllegalArgumentException.class })
+    protected ResponseEntity<Error> handleConflict(
+            IllegalArgumentException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Illegal Arguments").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { SQLIntegrityConstraintViolationException.class })
+    protected ResponseEntity<Error> handleConflict(
+            SQLIntegrityConstraintViolationException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Given Options Not Exists").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

@@ -17,7 +17,7 @@ public class Role {
     public Role() {
     }
 
-    public Role(String roleName) {
+    public Role(String roleName) throws IllegalArgumentException {
         this.roleName = roleName;
     }
 
