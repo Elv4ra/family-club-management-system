@@ -1,5 +1,7 @@
 package edu.kpi.iasa.mmsa.club.api;
 
+import edu.kpi.iasa.mmsa.club.exception.RankAlreadyExistsException;
+import edu.kpi.iasa.mmsa.club.exception.RankNotFoundException;
 import edu.kpi.iasa.mmsa.club.exception.RoleAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.RoleNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.model.Error;
@@ -31,6 +33,22 @@ public class HandlerController {
     protected ResponseEntity<Error> handleConflict(
             RoleAlreadyExistsException ex, WebRequest request) {
         Error error = Error.builder().code("BAD_REQUEST").description("This Role Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { RankNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            RankNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Rank Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { RankAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            RankAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("This Rank Already Exists").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

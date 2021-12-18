@@ -1,7 +1,7 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
 import javax.persistence.*;
-//import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "ranks")
@@ -11,7 +11,7 @@ public class Rank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true, name = "rank_name")
-    //NotBlank(message = "Rank name cannot be empty")
+    @NotBlank(message = "Rank name cannot be empty")
     private String rankName;
 
     public Rank() {

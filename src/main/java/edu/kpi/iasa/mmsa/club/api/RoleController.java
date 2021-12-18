@@ -30,9 +30,9 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
-    @GetMapping(value = "/roles/{roleName}")
-    public ResponseEntity<List<Role>> findByName(@PathVariable String roleName) {
-        return ResponseEntity.ok(roleService.getRoleByName(roleName));
+    @GetMapping(value = "/roles/{id}")
+    public ResponseEntity<Role> findById(@PathVariable long id) {
+        return ResponseEntity.ok(roleService.getRoleById(id));
     }
 
     @PutMapping(value = "/roles/{id}")

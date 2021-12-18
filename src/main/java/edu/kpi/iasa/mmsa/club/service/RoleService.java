@@ -20,10 +20,10 @@ public class RoleService {
         return  roleRepository.findAll();
     }
 
-    public List<Role> getRoleByName(String roleName) {
-        List<Role> roles = roleRepository.findAllByRoleName(roleName);
-        if (!(roles.isEmpty())) {
-            return roles;
+    public Role getRoleById(long id) {
+        Optional<Role> role = roleRepository.findById(id);
+        if (role.isPresent()) {
+            return role.get();
         }
         throw new RoleNotFoundException();
     }
@@ -45,7 +45,10 @@ public class RoleService {
     }
 
     public String deleteRoleById(long id) {
-        roleRepository.deleteById(id);
-        return "Role was successfully deleted";
+        if (roleRepository.findById(id).isPresent()) {
+            roleRepository.deleteById(id);
+            return "Role was successfully deleted";
+        }
+        throw new RoleNotFoundException();
     }
 }
