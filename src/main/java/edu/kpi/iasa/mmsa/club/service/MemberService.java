@@ -1,5 +1,6 @@
 package edu.kpi.iasa.mmsa.club.service;
 
+import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.MemberAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRepository;
@@ -18,7 +19,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public List<Member> getAllMembers() {
-        return memberRepository.findAll();
+        List<Member> members = memberRepository.findAll();
+        if (members.isEmpty()) {
+            throw new MemberNotFoundException();
+        }
+        return members;
     }
 
     public Member getMemberById(long id) {
@@ -81,18 +86,29 @@ public class MemberService {
         return result;
     }
 
-    public Member saveMember(Member newMember) {
+    public String createMember(Member newMember) {
         if (!(memberRepository.findByLogin((newMember.getLogin())).isPresent())) {
-            return memberRepository.save(newMember);
+            try {
+                memberRepository.save(newMember);
+                return "Member was successfully created";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
+
         }
         throw new MemberAlreadyExistsException();
     }
 
-    public Member updateMember(long id, Member updatedMember) {
+    public String updateMember(long id, Member updatedMember) {
         Optional<Member> oldMember = memberRepository.findById(id);
         if (oldMember.isPresent()) {
             updating(oldMember.get(), updatedMember);
-            return memberRepository.save(oldMember.get());
+            try {
+                memberRepository.save(oldMember.get());
+                return "Member with id="+String.valueOf(id)+"was successfully updated";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
         throw new MemberNotFoundException();
     }
@@ -115,7 +131,7 @@ public class MemberService {
     public String deleteMember(long id) {
         if (memberRepository.findById(id).isPresent()) {
             memberRepository.deleteById(id);
-            return "Member was successfully deleted";
+            return "Member with id="+String.valueOf(id)+" was successfully deleted";
         }
         throw new MemberNotFoundException();
     }

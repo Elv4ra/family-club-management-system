@@ -1,7 +1,6 @@
 package edu.kpi.iasa.mmsa.club.api;
 
 import edu.kpi.iasa.mmsa.club.repository.model.Event;
-import edu.kpi.iasa.mmsa.club.repository.model.Rank;
 import edu.kpi.iasa.mmsa.club.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/events")
-    public ResponseEntity<Event> createEvent(@Valid @RequestBody Event event) {
+    public ResponseEntity<String> createEvent(@Valid @RequestBody Event event) {
         return ResponseEntity.ok(eventService.saveEvent(event));
     }
 
@@ -52,7 +51,7 @@ public class EventController {
     }
 
     @PutMapping(value = "/events/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable long id, @RequestBody Event event) {
+    public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody Event event) {
         return ResponseEntity.ok(eventService.updateEvent(id, event));
     }
 

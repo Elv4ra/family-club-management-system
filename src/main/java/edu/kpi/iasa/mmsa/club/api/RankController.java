@@ -21,7 +21,7 @@ public class RankController {
     }
 
     @PostMapping(value = "/ranks")
-    public ResponseEntity<Rank> createRank(@Valid @RequestBody Rank newRank) {
+    public ResponseEntity<String> createRank(@Valid @RequestBody Rank newRank) {
         return ResponseEntity.ok(rankService.saveRank(newRank));
     }
 
@@ -36,7 +36,7 @@ public class RankController {
     }
 
     @PutMapping(value = "/ranks/{id}")
-    public ResponseEntity<Rank> updateRank(@PathVariable long id, @Valid @RequestBody Rank updatedRank) {
+    public ResponseEntity<String> updateRank(@PathVariable long id, @Valid @RequestBody Rank updatedRank) {
         return ResponseEntity.ok(rankService.updateRank(id, updatedRank));
     }
 

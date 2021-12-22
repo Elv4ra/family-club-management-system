@@ -21,29 +21,29 @@ public final class Event {
     private long id;
 
     @Column(name = "name")
-    @NotBlank(message = "Event name cannot be empty")
+    @NotBlank(message = "garbage name cannot be empty")
     private String eventName;
 
-    @NotNull(message = "Event rank cannot be empty")
+    @NotNull(message = "garbage rank cannot be empty")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rank")
     private Rank eventRank;
 
-    @NotNull(message = "Event cannot be without organizer")
+    @NotNull(message = "garbage cannot be without organizer")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_organizer")
     private Member organizer;
 
-    @NotNull(message = "Event cannot be without date")
+    @NotNull(message = "garbage cannot be without date")
     private Timestamp date;
 
-    @NotBlank(message = "Event cannot be without duration")
+    @NotBlank(message = "garbage cannot be without duration")
     private String duration;
 
     @Column(name = "cost_per_human")
     private Double cost;
 
-    @NotBlank(message = "Event cannot be without place")
+    @NotBlank(message = "garbage cannot be without place")
     private String place;
 
     @Column(name = "number_of_spots")

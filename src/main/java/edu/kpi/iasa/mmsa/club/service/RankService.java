@@ -1,5 +1,6 @@
 package edu.kpi.iasa.mmsa.club.service;
 
+import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.RankAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.RankNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.RankRepository;
@@ -18,10 +19,6 @@ public class RankService {
         this.rankRepository = rankRepository;
     }
 
-    public List<Rank> getAllRanks() {
-        return rankRepository.findAll();
-    }
-
     public Rank getRankById(long id) {
         Optional<Rank> rank = rankRepository.findById(id);
         if (rank.isPresent()) {
@@ -30,18 +27,36 @@ public class RankService {
         throw new RankNotFoundException();
     }
 
-    public Rank saveRank(Rank newRank) {
+    public List<Rank> getAllRanks() {
+        List<Rank> ranks = rankRepository.findAll();
+        if (ranks.isEmpty()) {
+            throw new RankNotFoundException();
+        }
+        return ranks;
+    }
+
+    public String saveRank(Rank newRank) {
         if (!(rankRepository.findByRankName(newRank.getRankName()).getClass().getName().equals(newRank.getRankName()))) {
-            return rankRepository.save(newRank);
+            try {
+                rankRepository.save(newRank);
+                return "New Rank was successfully created";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
         throw new RankAlreadyExistsException();
     }
 
-    public Rank updateRank(long id, Rank updatedRank) {
+    public String updateRank(long id, Rank updatedRank) {
         Optional<Rank> oldRank = rankRepository.findById(id);
         if (oldRank.isPresent()) {
-            oldRank.get().setRankName(updatedRank.getRankName());
-            return  rankRepository.save(oldRank.get());
+            try {
+                oldRank.get().setRankName(updatedRank.getRankName());
+                rankRepository.save(oldRank.get());
+                return "Rank with id="+String.valueOf(id)+"was successfully updated";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
         throw  new RankNotFoundException();
     }
@@ -49,7 +64,7 @@ public class RankService {
     public String deleteRankById(long id) {
         if (rankRepository.findById(id).isPresent()) {
             rankRepository.deleteById(id);
-            return "Rank was successfully deleted";
+            return "Rank with id="+String.valueOf(id)+"was successfully deleted";
         }
         throw new RankNotFoundException();
     }

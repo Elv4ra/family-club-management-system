@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -16,32 +16,30 @@ public final class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message = "Request cannot be without author")
+    @NotNull(message = "Request cannot be without author")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author")
     private Member author;
 
-    @NotBlank(message = "Request must have option for changing role or rank")
+    @NotNull(message = "Request must have option for changing role or rank")
     @Column(name = "rank_or_role")
-    private String objectOfChanging;
+    private RankOrRole objectOfChanging;
 
-    @NotBlank(message = "Request cannot be without description")
+    @NotNull(message = "Request cannot be without description")
     private String description;
 
-    private String status;
+    private Status status = Status.INPROCESS;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_modifier")
-    private Member modifier;
+    private Member modifier = null;
 
     public Request() {
     }
 
-    public Request(Member author, String objectOfChanging, String description, String status, Member modifier) throws IllegalArgumentException {
+    public Request(Member author, RankOrRole objectOfChanging, String description) {
         this.author = author;
         this.objectOfChanging = objectOfChanging;
         this.description = description;
-        this.status = status;
-        this.modifier = modifier;
     }
 }

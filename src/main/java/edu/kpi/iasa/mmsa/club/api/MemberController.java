@@ -22,9 +22,8 @@ public class MemberController {
     }
 
     @PostMapping(value = "/members")
-    public ResponseEntity<Member> createMember(@Valid @RequestBody Member member) {
-        Member newMember = new Member(member.getLogin(), member.getPassword(), member.getName(), member.getAlias(), member.getPhone());
-        return ResponseEntity.ok(memberService.saveMember(newMember));
+    public ResponseEntity<String> createMember(@Valid @RequestBody Member member) {
+        return ResponseEntity.ok(memberService.createMember(member));
     }
 
     @GetMapping(value ="/members")
@@ -58,7 +57,7 @@ public class MemberController {
     }
 
     @PutMapping(value = "/members/{id}")
-    public ResponseEntity<Member> updateMember(@PathVariable long id, @RequestBody Member updatedMember) {
+    public ResponseEntity<String> updateMember(@PathVariable long id, @RequestBody Member updatedMember) {
         return ResponseEntity.ok(memberService.updateMember(id, updatedMember));
     }
 

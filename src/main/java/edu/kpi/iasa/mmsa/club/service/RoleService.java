@@ -1,5 +1,6 @@
 package edu.kpi.iasa.mmsa.club.service;
 
+import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.RoleAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.RoleNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.RoleRepository;
@@ -17,7 +18,11 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     public List<Role> getAllRoles() {
-        return  roleRepository.findAll();
+        List<Role> roles = roleRepository.findAll();
+        if (roles.isEmpty()) {
+            throw new RoleNotFoundException();
+        }
+        return  roles;
     }
 
     public Role getRoleById(long id) {
@@ -28,18 +33,28 @@ public class RoleService {
         throw new RoleNotFoundException();
     }
 
-    public Role saveRole(Role newRole) {
+    public String createRole(Role newRole) {
         if (!(roleRepository.findByRoleName(newRole.getRoleName()).getClass().getName().equals(newRole.getRoleName()))) {
-            return roleRepository.save(newRole);
+            try {
+                roleRepository.save(newRole);
+                return "Role was successfully created";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
         throw new RoleAlreadyExistsException();
     }
 
-    public Role updateRole(long id, Role updatedRole) {
+    public String updateRole(long id, Role updatedRole) {
         Optional<Role> oldRole = roleRepository.findById(id);
         if (oldRole.isPresent()) {
-            oldRole.get().setRoleName(updatedRole.getRoleName());
-            return  roleRepository.save(oldRole.get());
+            try {
+                oldRole.get().setRoleName(updatedRole.getRoleName());
+                roleRepository.save(oldRole.get());
+                return "Role with id="+String.valueOf(id)+"was successfully updated";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
         throw  new RoleNotFoundException();
     }
@@ -47,7 +62,7 @@ public class RoleService {
     public String deleteRoleById(long id) {
         if (roleRepository.findById(id).isPresent()) {
             roleRepository.deleteById(id);
-            return "Role was successfully deleted";
+            return "Role with id="+String.valueOf(id)+"was successfully deleted";
         }
         throw new RoleNotFoundException();
     }

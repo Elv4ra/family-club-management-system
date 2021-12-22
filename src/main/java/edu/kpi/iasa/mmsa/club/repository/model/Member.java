@@ -45,9 +45,6 @@ public final class Member {
     @Column(name = "date_joining")
     private Timestamp joiningDate = new Timestamp(System.currentTimeMillis());
 
-    //@OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
-    //private List<Event> events;
-
     public Member() {
     }
 

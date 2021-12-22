@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.text.ParseException;
 
 @ControllerAdvice
 public class HandlerController {
@@ -69,14 +68,6 @@ public class HandlerController {
     }
 
     @ExceptionHandler(value
-            = { IllegalArgumentException.class })
-    protected ResponseEntity<Error> handleConflict(
-            IllegalArgumentException ex, WebRequest request) {
-        Error error = Error.builder().code("BAD_REQUEST").description("Illegal Arguments").build();
-        return ResponseEntity.badRequest().body(error);
-    }
-
-    @ExceptionHandler(value
             = { SQLIntegrityConstraintViolationException.class })
     protected ResponseEntity<Error> handleConflict(
             SQLIntegrityConstraintViolationException ex, WebRequest request) {
@@ -105,6 +96,38 @@ public class HandlerController {
     protected ResponseEntity<Error> handleConflict(
             TimeParseException ex, WebRequest request) {
         Error error = Error.builder().code("BAD_REQUEST").description("Invalid Input Data").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { RequestNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            RequestNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Request Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { RequestAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            RequestAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Request With This Date Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { InvalidEnumDataException.class })
+    protected ResponseEntity<Error> handleConflict(
+            InvalidEnumDataException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Invalid Enum Data Exception").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { InvalidInputDataException.class })
+    protected ResponseEntity<Error> handleConflict(
+            InvalidInputDataException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Invalid Input Data Exception").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

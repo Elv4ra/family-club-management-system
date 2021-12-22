@@ -21,8 +21,8 @@ public class RoleController {
     }
 
     @PostMapping(value = "/roles")
-    public ResponseEntity<Role> createRole(@Valid @RequestBody Role newRole) {
-        return ResponseEntity.ok(roleService.saveRole(newRole));
+    public ResponseEntity<String> createRole(@Valid @RequestBody Role newRole) {
+        return ResponseEntity.ok(roleService.createRole(newRole));
     }
 
     @GetMapping(value = "/roles")
@@ -36,7 +36,7 @@ public class RoleController {
     }
 
     @PutMapping(value = "/roles/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable long id, @Valid @RequestBody Role updatedRole) {
+    public ResponseEntity<String> updateRole(@PathVariable long id, @Valid @RequestBody Role updatedRole) {
         return ResponseEntity.ok(roleService.updateRole(id, updatedRole));
     }
 

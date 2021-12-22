@@ -2,6 +2,7 @@ package edu.kpi.iasa.mmsa.club.service;
 
 import edu.kpi.iasa.mmsa.club.exception.EventAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.EventNotFoundException;
+import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.TimeParseException;
 import edu.kpi.iasa.mmsa.club.repository.EventRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Event;
@@ -22,19 +23,24 @@ public class EventService {
 
     private final EventRepository eventRepository;
 
+    public String saveEvent(Event event) {
+        if (!((eventRepository.findByDate(event.getDate()).isPresent() && eventRepository.findByEventName(event.getEventName()).isPresent()) || (event.getDate().before(new Timestamp(System.currentTimeMillis()))))) {
+            try {
+                eventRepository.save(event);
+                return "New Event was successfully created";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
+        }
+        throw new EventAlreadyExistsException();
+    }
+
     public List<Event> getAllEvents() {
         List<Event> events = eventRepository.findAll();
         if (events.isEmpty()) {
             throw new EventNotFoundException();
         }
         return  events;
-    }
-
-    public Event saveEvent(Event event) {
-        if ((eventRepository.findByDate(event.getDate()).isPresent() && eventRepository.findByEventName(event.getEventName()).isPresent()) || (event.getDate().before(new Timestamp(System.currentTimeMillis())))) {
-            throw new EventAlreadyExistsException();
-        }
-        return eventRepository.save(event);
     }
 
     public List<Event> getAllEventsByRank(long rankId) {
@@ -100,13 +106,18 @@ public class EventService {
         return result;
     }
 
-    public Event updateEvent(long id, Event event) {
+    public String updateEvent(long id, Event event) {
         Optional<Event> maybeOldEvent = eventRepository.findById(id);
-        if (!maybeOldEvent.isPresent()) {
-            throw new EventNotFoundException();
+        if (maybeOldEvent.isPresent()) {
+            try {
+                updating(maybeOldEvent.get(), event);
+                eventRepository.save(maybeOldEvent.get());
+                return "Event with id="+String.valueOf(id)+"was successfully updated";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
         }
-        updating(maybeOldEvent.get(), event);
-        return eventRepository.save(maybeOldEvent.get());
+        throw new EventNotFoundException();
     }
 
     private void updating(Event oldEvent, Event newEvent) {
@@ -123,7 +134,7 @@ public class EventService {
         Optional<Event> event = eventRepository.findById(id);
         if (event.isPresent()) {
             eventRepository.delete(event.get());
-            return "Event was successfully deleted";
+            return "Event with id="+String.valueOf(id)+"was successfully deleted";
         }
         throw new EventNotFoundException();
     }
