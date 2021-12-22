@@ -1,12 +1,19 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
+@Data
 @Entity
 @Table(name = "members")
-public class Member {
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public final class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +34,7 @@ public class Member {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rank")
-    private Rank rank = new Rank(1, "Bronze");
+    private Rank memberRank = new Rank(1, "Bronze");
 
     @NotBlank(message = "Phone cannot be empty")
     private String phone;
@@ -38,6 +45,9 @@ public class Member {
     @Column(name = "date_joining")
     private Timestamp joiningDate = new Timestamp(System.currentTimeMillis());
 
+    //@OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
+    //private List<Event> events;
+
     public Member() {
     }
 
@@ -47,73 +57,6 @@ public class Member {
         this.name = name;
         this.alias = alias;
         this.phone = phone;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public void setRank(Rank rank) {
-        this.rank = rank;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Boolean getActiveMember() {
-        return isActiveMember;
-    }
-
-    public void setActiveMember(Boolean activeMember) {
-        isActiveMember = activeMember;
-    }
-
-    public Timestamp getJoiningDate() {
-        return joiningDate;
-    }
-
-    public void setJoiningDate(Timestamp joiningDate) {
-        this.joiningDate = joiningDate;
+        //this.events = new ArrayList<>();
     }
 }

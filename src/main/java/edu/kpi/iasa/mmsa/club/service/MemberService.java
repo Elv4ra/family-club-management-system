@@ -4,10 +4,10 @@ import edu.kpi.iasa.mmsa.club.exception.MemberAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Member;
-import edu.kpi.iasa.mmsa.club.repository.model.Rank;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,44 +29,56 @@ public class MemberService {
         throw new MemberNotFoundException();
     }
 
-    public Member getMemberByLogin(String login) {
-        Optional<Member> member = memberRepository.findByLogin(login);
-        if (member.isPresent()) {
-            return member.get();
+    public Member getMemberByName(String name) {
+        List<Member> members = memberRepository.findAll();
+        for (Member member : members) {
+            if (member.getLogin().equals(name)
+            || member.getName().equals(name)
+            || member.getAlias().equals(name)) {
+                return member;
+            }
         }
         throw new MemberNotFoundException();
     }
 
     public List<Member> getAllMembersByName(String name) {
-        List<Member> members = memberRepository.findAllByName(name);
-        if (!(members.isEmpty())) {
-            return members;
+        List<Member> members = memberRepository.findAll(), result = new ArrayList<>();
+        for (Member member : members) {
+            if (member.getName().equals(name)
+            || member.getAlias().equals(name)) {
+                result.add(member);
+            }
         }
-        throw new MemberNotFoundException();
+        if (result.isEmpty()) {
+            throw new MemberNotFoundException();
+        }
+        return result;
     }
 
-    public List<Member> getAllMembersByAlias(String alias) {
-        List<Member> members = memberRepository.findAllByAlias(alias);
-        if (!(members.isEmpty())) {
-            return members;
+    public List<Member> getAllMembersByRank(long rankId) {
+        List<Member> members = memberRepository.findAll(), result = new ArrayList<>();
+        for (Member member : members) {
+            if (member.getMemberRank().getId() == rankId) {
+                result.add(member);
+            }
         }
-        throw new MemberNotFoundException();
-    }
-
-    public List<Member> getAllMembersByRank(Rank rank) {
-        List<Member> members = memberRepository.findAllByRank(rank);
-        if (!(members.isEmpty())) {
-            return members;
+        if (result.isEmpty()) {
+            throw new MemberNotFoundException();
         }
-        throw new MemberNotFoundException();
+        return result;
     }
 
     public List<Member> getAllActiveMembers(Boolean isActive) {
-        List<Member> members = memberRepository.findAllByIsActiveMember(isActive);
-        if (!(members.isEmpty())) {
-            return members;
+        List<Member> members = memberRepository.findAll(), result = new ArrayList<>();
+        for (Member member : members) {
+            if (member.getIsActiveMember()) {
+                result.add(member);
+            }
         }
-        throw new MemberNotFoundException();
+        if (result.isEmpty()) {
+            throw new MemberNotFoundException();
+        }
+        return result;
     }
 
     public Member saveMember(Member newMember) {
@@ -94,10 +106,10 @@ public class MemberService {
         if (newMember.getName() != null && !(newMember.getName().isBlank())) oldMember.setName(newMember.getName());
         if (newMember.getAlias() != null && !(newMember.getAlias().isBlank())) oldMember.setAlias(newMember.getAlias());
         if (newMember.getPhone() != null && !(newMember.getPhone().isBlank())) oldMember.setPhone(newMember.getPhone());
-        if (newMember.getJoiningDate() != null && newMember.getActiveMember().booleanValue()) oldMember.setActiveMember(newMember.getActiveMember());
+        if (newMember.getJoiningDate() != null && newMember.getIsActiveMember().booleanValue()) oldMember.setIsActiveMember(newMember.getIsActiveMember());
         if (newMember.getJoiningDate() != null) oldMember.setJoiningDate(newMember.getJoiningDate());
 
-        if (newMember.getRank() != null) oldMember.setRank(newMember.getRank());
+        if (newMember.getMemberRank() != null) oldMember.setMemberRank(newMember.getMemberRank());
     }
 
     public String deleteMember(long id) {

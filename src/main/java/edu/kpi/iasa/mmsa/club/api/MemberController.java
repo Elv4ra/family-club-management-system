@@ -2,7 +2,6 @@ package edu.kpi.iasa.mmsa.club.api;
 
 
 import edu.kpi.iasa.mmsa.club.repository.model.Member;
-import edu.kpi.iasa.mmsa.club.repository.model.Rank;
 import edu.kpi.iasa.mmsa.club.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +37,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
 
-    @GetMapping(value = "/members/login/{login}")
-    public ResponseEntity<Member> findMemberByLogin(@PathVariable String login) {
-        return ResponseEntity.ok(memberService.getMemberByLogin(login));
+    @GetMapping(value = "/members/name/{name}")
+    public ResponseEntity<Member> findMemberByLogin(@PathVariable String name) {
+        return ResponseEntity.ok(memberService.getMemberByName(name));
     }
 
     @GetMapping(value = "/members/names/{name}")
@@ -48,14 +47,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getAllMembersByName(name));
     }
 
-    @GetMapping(value = "/members/alias/{alias}")
-    public ResponseEntity<List<Member>> findMembersByAlias(@PathVariable String alias) {
-        return ResponseEntity.ok(memberService.getAllMembersByAlias(alias));
-    }
-
-    @GetMapping(value = "/members/ranks")
-    public ResponseEntity<List<Member>> findMembersByRank(@RequestBody Rank rank) {
-        return ResponseEntity.ok(memberService.getAllMembersByRank(rank));
+    @GetMapping(value = "/members/ranks/{id}")
+    public ResponseEntity<List<Member>> findMembersByRank(@PathVariable long id) {
+        return ResponseEntity.ok(memberService.getAllMembersByRank(id));
     }
 
     @GetMapping(value = "/members/active/{isActive}")

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.text.ParseException;
 
 @ControllerAdvice
 public class HandlerController {
@@ -80,6 +81,30 @@ public class HandlerController {
     protected ResponseEntity<Error> handleConflict(
             SQLIntegrityConstraintViolationException ex, WebRequest request) {
         Error error = Error.builder().code("BAD_REQUEST").description("Given Options Not Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { EventNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            EventNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Event Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { EventAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            EventAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Event With This Date Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { TimeParseException.class })
+    protected ResponseEntity<Error> handleConflict(
+            TimeParseException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Invalid Input Data").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

@@ -1,11 +1,14 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "roles")
-public class Role {
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public final class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

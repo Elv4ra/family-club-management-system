@@ -4,7 +4,6 @@ import edu.kpi.iasa.mmsa.club.exception.RankAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.RankNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.RankRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Rank;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class RankService {
     public Rank updateRank(long id, Rank updatedRank) {
         Optional<Rank> oldRank = rankRepository.findById(id);
         if (oldRank.isPresent()) {
-            oldRank.get().setRankName(updatedRank);
+            oldRank.get().setRankName(updatedRank.getRankName());
             return  rankRepository.save(oldRank.get());
         }
         throw  new RankNotFoundException();

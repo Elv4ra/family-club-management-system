@@ -1,84 +1,47 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
-import javax.persistence.*;
-//import javax.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Data
 @Entity
 @Table(name = "request")
-public class Request {
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+public final class Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    //@NotBlank(message = "Request cannot be without author")
-    @Column(name = "id_author")
-    private Integer idAuthor;
+    @NotBlank(message = "Request cannot be without author")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_author")
+    private Member author;
 
-    //@NotBlank(message = "Request must have option for changing role or rank")
+    @NotBlank(message = "Request must have option for changing role or rank")
     @Column(name = "rank_or_role")
     private String objectOfChanging;
 
-    //@NotBlank(message = "Request cannot be without description")
+    @NotBlank(message = "Request cannot be without description")
     private String description;
 
     private String status;
 
-    @Column(name = "id_modifier")
-    private Integer idModifier;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_modifier")
+    private Member modifier;
 
     public Request() {
     }
 
-    public Request(Integer idAuthor, String objectOfChanging, String description, String status, Integer idModifier) throws IllegalArgumentException {
-        this.idAuthor = idAuthor;
+    public Request(Member author, String objectOfChanging, String description, String status, Member modifier) throws IllegalArgumentException {
+        this.author = author;
         this.objectOfChanging = objectOfChanging;
         this.description = description;
         this.status = status;
-        this.idModifier = idModifier;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Integer getIdAuthor() {
-        return idAuthor;
-    }
-
-    public void setIdAuthor(Integer idAuthor) {
-        this.idAuthor = idAuthor;
-    }
-
-    public String getObjectOfChanging() {
-        return objectOfChanging;
-    }
-
-    public void setObjectOfChanging(String objectOfChanging) {
-        this.objectOfChanging = objectOfChanging;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Integer getIdModifier() {
-        return idModifier;
-    }
-
-    public void setIdModifier(Integer idModifier) {
-        this.idModifier = idModifier;
+        this.modifier = modifier;
     }
 }
