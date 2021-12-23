@@ -27,32 +27,32 @@ public class MemberController {
     }
 
     @GetMapping(value ="/members")
-    public ResponseEntity<List<Member>> findAll() {
+    public ResponseEntity<List<Member>> readAll() {
         return ResponseEntity.ok(memberService.getAllMembers());
     }
 
     @GetMapping(value = "/members/{id}")
-    public ResponseEntity<Member> findMemberById(@PathVariable long id) {
+    public ResponseEntity<Member> readMemberById(@PathVariable long id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
 
     @GetMapping(value = "/members/name/{name}")
-    public ResponseEntity<Member> findMemberByLogin(@PathVariable String name) {
+    public ResponseEntity<Member> readMemberByLogin(@PathVariable String name) {
         return ResponseEntity.ok(memberService.getMemberByName(name));
     }
 
     @GetMapping(value = "/members/names/{name}")
-    public ResponseEntity<List<Member>> findMembersByName(@PathVariable String name) {
+    public ResponseEntity<List<Member>> readMembersByName(@PathVariable String name) {
         return ResponseEntity.ok(memberService.getAllMembersByName(name));
     }
 
     @GetMapping(value = "/members/ranks/{id}")
-    public ResponseEntity<List<Member>> findMembersByRank(@PathVariable long id) {
+    public ResponseEntity<List<Member>> readMembersByRank(@PathVariable long id) {
         return ResponseEntity.ok(memberService.getAllMembersByRank(id));
     }
 
     @GetMapping(value = "/members/active/{isActive}")
-    public ResponseEntity<List<Member>> findActiveMembers(@PathVariable Boolean isActive) {
+    public ResponseEntity<List<Member>> readActiveMembers(@PathVariable Boolean isActive) {
         return ResponseEntity.ok(memberService.getAllActiveMembers(isActive));
     }
 

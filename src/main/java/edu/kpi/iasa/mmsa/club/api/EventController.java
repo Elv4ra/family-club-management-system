@@ -22,31 +22,31 @@ public class EventController {
 
     @PostMapping(value = "/events")
     public ResponseEntity<String> createEvent(@Valid @RequestBody Event event) {
-        return ResponseEntity.ok(eventService.saveEvent(event));
+        return ResponseEntity.ok(eventService.createEvent(event));
     }
 
     @GetMapping(value = "/events")
-    public ResponseEntity<List<Event>> findAll() {
+    public ResponseEntity<List<Event>> readAll() {
         return ResponseEntity.ok(eventService.getAllEvents());
     }
 
     @GetMapping(value = "/events/rank/{rankId}")
-        public ResponseEntity<List<Event>> findAllByRank(@PathVariable long rankId) {
+        public ResponseEntity<List<Event>> readAllByRank(@PathVariable long rankId) {
         return ResponseEntity.ok(eventService.getAllEventsByRank(rankId));
     }
 
     @GetMapping(value = "/events/organizer/{login}")
-    public ResponseEntity<List<Event>> findAllByOrganizer(@PathVariable("login") String login) {
+    public ResponseEntity<List<Event>> readAllByOrganizer(@PathVariable("login") String login) {
         return ResponseEntity.ok(eventService.getAllEventsByOrganizer(login));
     }
 
     @GetMapping(value = "/events/date/{date}")
-    public ResponseEntity<List<Event>> findAllByDate(@PathVariable String date) {
+    public ResponseEntity<List<Event>> readAllByDate(@PathVariable String date) {
         return ResponseEntity.ok(eventService.getAllEventsByDate(date));
     }
 
     @GetMapping(value = "/events/cost/{cost}")
-    public ResponseEntity<List<Event>> findAllByCost(@PathVariable Double cost) {
+    public ResponseEntity<List<Event>> readAllByCost(@PathVariable Double cost) {
         return ResponseEntity.ok(eventService.getAllEventsByCost(cost));
     }
 

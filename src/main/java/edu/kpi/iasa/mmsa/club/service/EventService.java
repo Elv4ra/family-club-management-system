@@ -6,7 +6,7 @@ import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.TimeParseException;
 import edu.kpi.iasa.mmsa.club.repository.EventRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Event;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -18,12 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class EventService {
 
     private final EventRepository eventRepository;
 
-    public String saveEvent(Event event) {
+    @Autowired
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
+    public String createEvent(Event event) {
         if (!((eventRepository.findByDate(event.getDate()).isPresent() && eventRepository.findByEventName(event.getEventName()).isPresent()) || (event.getDate().before(new Timestamp(System.currentTimeMillis()))))) {
             try {
                 eventRepository.save(event);
@@ -112,7 +116,7 @@ public class EventService {
             try {
                 updating(maybeOldEvent.get(), event);
                 eventRepository.save(maybeOldEvent.get());
-                return "Event with id="+String.valueOf(id)+"was successfully updated";
+                return "Event with id="+String.valueOf(id)+" was successfully updated";
             } catch (IllegalArgumentException e) {
                 throw new InvalidInputDataException();
             }
@@ -134,7 +138,7 @@ public class EventService {
         Optional<Event> event = eventRepository.findById(id);
         if (event.isPresent()) {
             eventRepository.delete(event.get());
-            return "Event with id="+String.valueOf(id)+"was successfully deleted";
+            return "Event with id="+String.valueOf(id)+" was successfully deleted";
         }
         throw new EventNotFoundException();
     }

@@ -26,12 +26,12 @@ public class RoleController {
     }
 
     @GetMapping(value = "/roles")
-    public ResponseEntity<List<Role>> findAll() {
+    public ResponseEntity<List<Role>> readAll() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     @GetMapping(value = "/roles/{id}")
-    public ResponseEntity<Role> findById(@PathVariable long id) {
+    public ResponseEntity<Role> readById(@PathVariable long id) {
         return ResponseEntity.ok(roleService.getRoleById(id));
     }
 

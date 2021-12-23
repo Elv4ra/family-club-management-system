@@ -2,6 +2,7 @@ package edu.kpi.iasa.mmsa.club.api;
 
 import edu.kpi.iasa.mmsa.club.exception.*;
 import edu.kpi.iasa.mmsa.club.repository.model.Error;
+import edu.kpi.iasa.mmsa.club.repository.model.MemberRole;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -128,6 +129,22 @@ public class HandlerController {
     protected ResponseEntity<Error> handleConflict(
             InvalidInputDataException ex, WebRequest request) {
         Error error = Error.builder().code("BAD_REQUEST").description("Invalid Input Data Exception").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = {MemberRoleNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            MemberRoleNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Members Role Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { MemberRoleAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            MemberRoleAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("This Members Role Already Exists").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

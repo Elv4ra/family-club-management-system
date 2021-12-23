@@ -7,7 +7,7 @@ import edu.kpi.iasa.mmsa.club.repository.RequestRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.RankOrRole;
 import edu.kpi.iasa.mmsa.club.repository.model.Request;
 import edu.kpi.iasa.mmsa.club.repository.model.Status;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +15,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class RequestService {
 
     private final RequestRepository requestRepository;
+
+    @Autowired
+    public RequestService(RequestRepository requestRepository) {
+        this.requestRepository = requestRepository;
+    }
 
     public List<Request> getAllRequests() {
         List<Request> requests = requestRepository.findAll();

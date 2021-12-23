@@ -5,7 +5,7 @@ import edu.kpi.iasa.mmsa.club.exception.MemberAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Member;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,10 +13,27 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
+
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
+    public String createMember(Member newMember) {
+        if (!(memberRepository.findByLogin((newMember.getLogin())).isPresent())) {
+            try {
+                memberRepository.save(newMember);
+                return "Member was successfully created";
+            } catch (IllegalArgumentException e) {
+                throw new InvalidInputDataException();
+            }
+
+        }
+        throw new MemberAlreadyExistsException();
+    }
 
     public List<Member> getAllMembers() {
         List<Member> members = memberRepository.findAll();
@@ -86,26 +103,13 @@ public class MemberService {
         return result;
     }
 
-    public String createMember(Member newMember) {
-        if (!(memberRepository.findByLogin((newMember.getLogin())).isPresent())) {
-            try {
-                memberRepository.save(newMember);
-                return "Member was successfully created";
-            } catch (IllegalArgumentException e) {
-                throw new InvalidInputDataException();
-            }
-
-        }
-        throw new MemberAlreadyExistsException();
-    }
-
     public String updateMember(long id, Member updatedMember) {
         Optional<Member> oldMember = memberRepository.findById(id);
         if (oldMember.isPresent()) {
             updating(oldMember.get(), updatedMember);
             try {
                 memberRepository.save(oldMember.get());
-                return "Member with id="+String.valueOf(id)+"was successfully updated";
+                return "Member Info For "+memberRepository.findById(id).get().getLogin()+" was successfully updated";
             } catch (IllegalArgumentException e) {
                 throw new InvalidInputDataException();
             }
@@ -131,7 +135,7 @@ public class MemberService {
     public String deleteMember(long id) {
         if (memberRepository.findById(id).isPresent()) {
             memberRepository.deleteById(id);
-            return "Member with id="+String.valueOf(id)+" was successfully deleted";
+            return "Member "+memberRepository.findById(id).get().getLogin()+" was successfully deleted";
         }
         throw new MemberNotFoundException();
     }

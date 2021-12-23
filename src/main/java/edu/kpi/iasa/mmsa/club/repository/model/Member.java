@@ -1,13 +1,12 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -54,6 +53,10 @@ public final class Member {
         this.name = name;
         this.alias = alias;
         this.phone = phone;
-        //this.events = new ArrayList<>();
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
     }
 }

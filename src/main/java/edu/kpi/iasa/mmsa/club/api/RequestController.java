@@ -2,6 +2,7 @@ package edu.kpi.iasa.mmsa.club.api;
 
 import edu.kpi.iasa.mmsa.club.repository.model.Request;
 import edu.kpi.iasa.mmsa.club.service.RequestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ public class RequestController {
 
     private final RequestService requestService;
 
+    @Autowired
     public RequestController(RequestService requestService) {
         this.requestService = requestService;
     }
@@ -24,22 +26,22 @@ public class RequestController {
     }
 
     @GetMapping(value = "/requests")
-    public ResponseEntity<List<Request>> findAll() {
+    public ResponseEntity<List<Request>> readAll() {
         return ResponseEntity.ok(requestService.getAllRequests());
     }
 
     @GetMapping(value = "/requests/id/{id}")
-    public ResponseEntity<Request> findById(@PathVariable long id) {
+    public ResponseEntity<Request> readById(@PathVariable long id) {
         return ResponseEntity.ok(requestService.getRequestById(id));
     }
 
     @GetMapping(value = "/requests/{rankOrRole}")
-    public ResponseEntity<List<Request>> findAllByAim(@PathVariable String rankOrRole) {
+    public ResponseEntity<List<Request>> readAllByAim(@PathVariable String rankOrRole) {
         return ResponseEntity.ok(requestService.getAllRequestsByRankOrRole(rankOrRole));
     }
 
     @GetMapping(value = "/requests/status/{status}")
-    public ResponseEntity<List<Request>> findAllByStatus(@PathVariable String status) {
+    public ResponseEntity<List<Request>> readAllByStatus(@PathVariable String status) {
         return ResponseEntity.ok(requestService.getAllRequestsByStatus(status));
     }
 

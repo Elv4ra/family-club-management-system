@@ -1,5 +1,6 @@
 package edu.kpi.iasa.mmsa.club.api;
 
+import edu.kpi.iasa.mmsa.club.repository.model.Member;
 import edu.kpi.iasa.mmsa.club.repository.model.Rank;
 import edu.kpi.iasa.mmsa.club.service.RankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,16 @@ public class RankController {
 
     @PostMapping(value = "/ranks")
     public ResponseEntity<String> createRank(@Valid @RequestBody Rank newRank) {
-        return ResponseEntity.ok(rankService.saveRank(newRank));
+        return ResponseEntity.ok(rankService.createRank(newRank));
     }
 
     @GetMapping(value = "/ranks")
-    public ResponseEntity<List<Rank>> findAll() {
+    public ResponseEntity<List<Rank>> readAll() {
         return ResponseEntity.ok(rankService.getAllRanks());
     }
 
     @GetMapping(value = "/ranks/{id}")
-    public ResponseEntity<Rank> findById(@PathVariable long id) {
+    public ResponseEntity<Rank> readById(@PathVariable long id) {
         return ResponseEntity.ok(rankService.getRankById(id));
     }
 
