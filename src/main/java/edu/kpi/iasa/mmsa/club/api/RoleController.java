@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/roles")
 public class RoleController {
 
     private final RoleService roleService;
@@ -20,27 +21,27 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PostMapping(value = "/roles")
+    @PostMapping
     public ResponseEntity<String> createRole(@Valid @RequestBody Role newRole) {
         return ResponseEntity.ok(roleService.createRole(newRole));
     }
 
-    @GetMapping(value = "/roles")
+    @GetMapping
     public ResponseEntity<List<Role>> readAll() {
         return ResponseEntity.ok(roleService.getAllRoles());
     }
 
-    @GetMapping(value = "/roles/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Role> readById(@PathVariable long id) {
         return ResponseEntity.ok(roleService.getRoleById(id));
     }
 
-    @PutMapping(value = "/roles/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateRole(@PathVariable long id, @Valid @RequestBody Role updatedRole) {
         return ResponseEntity.ok(roleService.updateRole(id, updatedRole));
     }
 
-    @DeleteMapping(value = "/roles/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteRole(@PathVariable long id) {
         return ResponseEntity.ok(roleService.deleteRoleById(id));
     }

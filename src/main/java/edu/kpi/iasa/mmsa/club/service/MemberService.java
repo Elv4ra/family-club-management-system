@@ -5,6 +5,7 @@ import edu.kpi.iasa.mmsa.club.exception.MemberAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Member;
+import org.aspectj.weaver.patterns.OrTypePattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class MemberService {
     }
 
     public String createMember(Member newMember) {
-        if (!(memberRepository.findByLogin((newMember.getLogin())).isPresent())) {
+        if (!(memberRepository.findByLogin(newMember.getLogin()).isPresent())) {
             try {
                 memberRepository.save(newMember);
                 return "Member was successfully created";
@@ -93,7 +94,7 @@ public class MemberService {
     public List<Member> getAllActiveMembers(Boolean isActive) {
         List<Member> members = memberRepository.findAll(), result = new ArrayList<>();
         for (Member member : members) {
-            if (member.getIsActiveMember()) {
+            if (member.getIsActiveMember() == isActive) {
                 result.add(member);
             }
         }
@@ -133,9 +134,10 @@ public class MemberService {
     }
 
     public String deleteMember(long id) {
-        if (memberRepository.findById(id).isPresent()) {
-            memberRepository.deleteById(id);
-            return "Member "+memberRepository.findById(id).get().getLogin()+" was successfully deleted";
+        Optional<Member> member = memberRepository.findById(id);
+        if (member.isPresent()) {
+            memberRepository.delete(member.get());
+            return "Member "+member.get().getLogin()+" was successfully deleted";
         }
         throw new MemberNotFoundException();
     }

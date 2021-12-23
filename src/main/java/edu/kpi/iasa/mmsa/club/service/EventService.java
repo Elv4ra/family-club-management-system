@@ -5,7 +5,9 @@ import edu.kpi.iasa.mmsa.club.exception.EventNotFoundException;
 import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.TimeParseException;
 import edu.kpi.iasa.mmsa.club.repository.EventRepository;
+import edu.kpi.iasa.mmsa.club.repository.FinancesRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Event;
+import edu.kpi.iasa.mmsa.club.repository.model.Finances;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +23,20 @@ import java.util.Optional;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final FinancesRepository financesRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository) {
+    public EventService(EventRepository eventRepository, FinancesRepository financesRepository) {
         this.eventRepository = eventRepository;
+        this.financesRepository = financesRepository;
     }
 
     public String createEvent(Event event) {
         if (!((eventRepository.findByDate(event.getDate()).isPresent() && eventRepository.findByEventName(event.getEventName()).isPresent()) || (event.getDate().before(new Timestamp(System.currentTimeMillis()))))) {
             try {
                 eventRepository.save(event);
+                Optional<Event> newEvent = eventRepository.findByEventName(event.getEventName());
+                financesRepository.save(new Finances(newEvent.get().getOrganizer(), newEvent.get()));
                 return "New Event was successfully created";
             } catch (IllegalArgumentException e) {
                 throw new InvalidInputDataException();
@@ -138,7 +144,7 @@ public class EventService {
         Optional<Event> event = eventRepository.findById(id);
         if (event.isPresent()) {
             eventRepository.delete(event.get());
-            return "Event with id="+String.valueOf(id)+" was successfully deleted";
+            return "Event \""+event.get().getEventName()+"\" was successfully deleted";
         }
         throw new EventNotFoundException();
     }

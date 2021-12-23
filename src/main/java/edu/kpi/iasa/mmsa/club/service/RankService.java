@@ -22,7 +22,7 @@ public class RankService {
     }
 
     public String createRank(Rank newRank) {
-        if (!(rankRepository.findByRankName(newRank.getRankName()).getClass().getName().equals(newRank.getRankName()))) {
+        if (!(rankRepository.findByRankName(newRank.getRankName()).isPresent())) {
             try {
                 rankRepository.save(newRank);
                 return "New Rank was successfully created";
@@ -64,8 +64,9 @@ public class RankService {
     }
 
     public String deleteRankById(long id) {
-        if (rankRepository.findById(id).isPresent()) {
-            rankRepository.deleteById(id);
+        Optional<Rank> rank = rankRepository.findById(id);
+        if (rank.isPresent()) {
+            rankRepository.delete(rank.get());
             return "Rank "+rankRepository.findById(id).get().getRankName()+" was successfully deleted";
         }
         throw new RankNotFoundException();

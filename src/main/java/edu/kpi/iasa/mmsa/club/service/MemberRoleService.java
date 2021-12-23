@@ -4,9 +4,7 @@ import edu.kpi.iasa.mmsa.club.exception.InvalidInputDataException;
 import edu.kpi.iasa.mmsa.club.exception.MemberRoleAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberRoleNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRoleRepository;
-import edu.kpi.iasa.mmsa.club.repository.model.Member;
 import edu.kpi.iasa.mmsa.club.repository.model.MemberRole;
-import edu.kpi.iasa.mmsa.club.repository.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +24,6 @@ public class MemberRoleService {
 
     public String createMemberRole(MemberRole memberRole) {
         List<MemberRole> memberRoles = memberRoleRepository.findAll();
-        if (memberRoles.isEmpty()) {
-            throw new MemberRoleNotFoundException();
-        }
-
         for (MemberRole savedMemberRole : memberRoles) {
             if (savedMemberRole.getRole().getId() == memberRole.getRole().getId()
             && savedMemberRole.getMember().getId() == memberRole.getMember().getId()) {
@@ -83,7 +77,7 @@ public class MemberRoleService {
     public String deleteMembersRole(long id) {
         Optional<MemberRole> memberRole = memberRoleRepository.findById(id);
         if (memberRole.isPresent()) {
-            memberRoleRepository.deleteById(id);
+            memberRoleRepository.delete(memberRole.get());
             return "Role " + memberRole.get().getRole().getRoleName() + " for member " + memberRole.get().getMember().getLogin() + " was successfully deleted";
         }
         throw new MemberRoleNotFoundException();

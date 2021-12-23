@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/events")
 public class EventController {
 
     private final EventService eventService;
@@ -20,42 +21,42 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @PostMapping(value = "/events")
+    @PostMapping
     public ResponseEntity<String> createEvent(@Valid @RequestBody Event event) {
         return ResponseEntity.ok(eventService.createEvent(event));
     }
 
-    @GetMapping(value = "/events")
+    @GetMapping
     public ResponseEntity<List<Event>> readAll() {
         return ResponseEntity.ok(eventService.getAllEvents());
     }
 
-    @GetMapping(value = "/events/rank/{rankId}")
+    @GetMapping(value = "/rank/{rankId}")
         public ResponseEntity<List<Event>> readAllByRank(@PathVariable long rankId) {
         return ResponseEntity.ok(eventService.getAllEventsByRank(rankId));
     }
 
-    @GetMapping(value = "/events/organizer/{login}")
+    @GetMapping(value = "/organizer/{login}")
     public ResponseEntity<List<Event>> readAllByOrganizer(@PathVariable("login") String login) {
         return ResponseEntity.ok(eventService.getAllEventsByOrganizer(login));
     }
 
-    @GetMapping(value = "/events/date/{date}")
+    @GetMapping(value = "/date/{date}")
     public ResponseEntity<List<Event>> readAllByDate(@PathVariable String date) {
         return ResponseEntity.ok(eventService.getAllEventsByDate(date));
     }
 
-    @GetMapping(value = "/events/cost/{cost}")
+    @GetMapping(value = "/cost/{cost}")
     public ResponseEntity<List<Event>> readAllByCost(@PathVariable Double cost) {
         return ResponseEntity.ok(eventService.getAllEventsByCost(cost));
     }
 
-    @PutMapping(value = "/events/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateEvent(@PathVariable long id, @RequestBody Event event) {
         return ResponseEntity.ok(eventService.updateEvent(id, event));
     }
 
-    @DeleteMapping(value = "/events/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteEvent(@PathVariable long id) {
         return ResponseEntity.ok(eventService.deleteEvent(id));
     }

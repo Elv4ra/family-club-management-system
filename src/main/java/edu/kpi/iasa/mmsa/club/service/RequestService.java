@@ -24,14 +24,6 @@ public class RequestService {
         this.requestRepository = requestRepository;
     }
 
-    public List<Request> getAllRequests() {
-        List<Request> requests = requestRepository.findAll();
-        if (requests.isEmpty()) {
-            throw new RequestNotFoundException();
-        }
-        return requests;
-    }
-
     public String createRequest(Request request) {
         try{
             requestRepository.save(request);
@@ -39,6 +31,14 @@ public class RequestService {
             throw new InvalidInputDataException();
         }
         return "New Request was successfully created";
+    }
+
+    public List<Request> getAllRequests() {
+        List<Request> requests = requestRepository.findAll();
+        if (requests.isEmpty()) {
+            throw new RequestNotFoundException();
+        }
+        return requests;
     }
 
     public Request getRequestById(long id) {
@@ -107,8 +107,9 @@ public class RequestService {
     }
 
     public String deleteRequest(long id) {
-        if (requestRepository.findById(id).isPresent()) {
-            requestRepository.deleteById(id);
+        Optional<Request> request = requestRepository.findById(id);
+        if (request.isPresent()) {
+            requestRepository.delete(request.get());
             return "Request with id="+String.valueOf(id)+" was successfully deleted";
         }
         throw new RequestNotFoundException();

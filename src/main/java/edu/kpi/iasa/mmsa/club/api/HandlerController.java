@@ -2,7 +2,6 @@ package edu.kpi.iasa.mmsa.club.api;
 
 import edu.kpi.iasa.mmsa.club.exception.*;
 import edu.kpi.iasa.mmsa.club.repository.model.Error;
-import edu.kpi.iasa.mmsa.club.repository.model.MemberRole;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -72,7 +71,7 @@ public class HandlerController {
             = { SQLIntegrityConstraintViolationException.class })
     protected ResponseEntity<Error> handleConflict(
             SQLIntegrityConstraintViolationException ex, WebRequest request) {
-        Error error = Error.builder().code("BAD_REQUEST").description("Given Options Not Exists").build();
+        Error error = Error.builder().code("BAD_REQUEST").description("Argument Not Exists In Data Base").build();
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -145,6 +144,22 @@ public class HandlerController {
     protected ResponseEntity<Error> handleConflict(
             MemberRoleAlreadyExistsException ex, WebRequest request) {
         Error error = Error.builder().code("BAD_REQUEST").description("This Members Role Already Exists").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = {FinancesNotFoundException.class })
+    protected ResponseEntity<Error> handleConflict(
+            FinancesNotFoundException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Finances Not Found").build();
+        return ResponseEntity.badRequest().body(error);
+    }
+
+    @ExceptionHandler(value
+            = { FinancesAlreadyExistsException.class })
+    protected ResponseEntity<Error> handleConflict(
+            FinancesAlreadyExistsException ex, WebRequest request) {
+        Error error = Error.builder().code("BAD_REQUEST").description("Member Finances Record For This Event Already Exists").build();
         return ResponseEntity.badRequest().body(error);
     }
 }

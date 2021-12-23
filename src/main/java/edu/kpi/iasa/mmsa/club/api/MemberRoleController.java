@@ -8,12 +8,14 @@ import org.springframework.boot.rsocket.context.RSocketPortInfoApplicationContex
 import org.springframework.data.repository.config.RepositoryConfigurationSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/membersroles")
 public class MemberRoleController {
 
     private final MemberRoleService memberRoleService;
@@ -23,27 +25,27 @@ public class MemberRoleController {
         this.memberRoleService = memberRoleService;
     }
 
-    @PostMapping(value = "/membersroles")
+    @PostMapping
     public ResponseEntity<String> createMembersRole(@Valid @RequestBody MemberRole memberRole) {
         return ResponseEntity.ok(memberRoleService.createMemberRole(memberRole));
     }
 
-    @GetMapping(value = "/membersroles")
+    @GetMapping
     public ResponseEntity<List<MemberRole>> readAll() {
         return ResponseEntity.ok(memberRoleService.getAllMemberRoles());
     }
 
-    @GetMapping(value = "/membersroles/member/{memberName}")
+    @GetMapping(value = "/member/{memberName}")
     public ResponseEntity<List<MemberRole>> readAllMembersRoles(@PathVariable String memberName) {
         return ResponseEntity.ok(memberRoleService.getAllMembersRoles(memberName));
     }
 
-    @GetMapping(value = "/membersroles/role/{roleName}")
+    @GetMapping(value = "/role/{roleName}")
     public ResponseEntity<List<MemberRole>> readAllRolesMembers(@PathVariable String roleName) {
         return ResponseEntity.ok(memberRoleService.getAllRolesMembers(roleName));
     }
 
-    @DeleteMapping(value = "/membersroles/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteMembersRole(@PathVariable long id) {
         return ResponseEntity.ok(memberRoleService.deleteMembersRole(id));
     }

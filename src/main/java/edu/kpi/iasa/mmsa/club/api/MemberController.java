@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -21,47 +22,47 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PostMapping(value = "/members")
+    @PostMapping
     public ResponseEntity<String> createMember(@Valid @RequestBody Member member) {
         return ResponseEntity.ok(memberService.createMember(member));
     }
 
-    @GetMapping(value ="/members")
+    @GetMapping
     public ResponseEntity<List<Member>> readAll() {
         return ResponseEntity.ok(memberService.getAllMembers());
     }
 
-    @GetMapping(value = "/members/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Member> readMemberById(@PathVariable long id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
     }
 
-    @GetMapping(value = "/members/name/{name}")
+    @GetMapping(value = "/name/{name}")
     public ResponseEntity<Member> readMemberByLogin(@PathVariable String name) {
         return ResponseEntity.ok(memberService.getMemberByName(name));
     }
 
-    @GetMapping(value = "/members/names/{name}")
+    @GetMapping(value = "/names/{name}")
     public ResponseEntity<List<Member>> readMembersByName(@PathVariable String name) {
         return ResponseEntity.ok(memberService.getAllMembersByName(name));
     }
 
-    @GetMapping(value = "/members/ranks/{id}")
+    @GetMapping(value = "/ranks/{id}")
     public ResponseEntity<List<Member>> readMembersByRank(@PathVariable long id) {
         return ResponseEntity.ok(memberService.getAllMembersByRank(id));
     }
 
-    @GetMapping(value = "/members/active/{isActive}")
+    @GetMapping(value = "/active/{isActive}")
     public ResponseEntity<List<Member>> readActiveMembers(@PathVariable Boolean isActive) {
         return ResponseEntity.ok(memberService.getAllActiveMembers(isActive));
     }
 
-    @PutMapping(value = "/members/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateMember(@PathVariable long id, @RequestBody Member updatedMember) {
         return ResponseEntity.ok(memberService.updateMember(id, updatedMember));
     }
 
-    @DeleteMapping(value = "/members/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteMember(@PathVariable long id) {
         return ResponseEntity.ok(memberService.deleteMember(id));
     }

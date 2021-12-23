@@ -48,12 +48,12 @@ public final class Event {
     private Integer freeSpots;
 
     @Column(name = "already_occupied")
-    private Integer occupiedSpots;
+    private Integer occupiedSpots = 1;
 
     public Event() {
     }
 
-    public Event(String eventName, Rank eventRank, Member organizer, Timestamp date, String duration, Double cost, String place, Integer freeSpots, Integer occupiedSpots) throws IllegalArgumentException {
+    public Event(String eventName, Rank eventRank, Member organizer, Timestamp date, String duration, Double cost, String place, Integer freeSpots) throws IllegalArgumentException {
         this.eventName = eventName;
         this.eventRank = eventRank;
         this.organizer = organizer;
@@ -62,6 +62,5 @@ public final class Event {
         this.cost = cost;
         this.place = place;
         this.freeSpots = freeSpots;
-        this.occupiedSpots = occupiedSpots;
     }
 }

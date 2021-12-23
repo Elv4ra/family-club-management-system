@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/ranks")
 public class RankController {
 
     private final RankService rankService;
@@ -21,27 +22,27 @@ public class RankController {
         this.rankService = rankService;
     }
 
-    @PostMapping(value = "/ranks")
+    @PostMapping
     public ResponseEntity<String> createRank(@Valid @RequestBody Rank newRank) {
         return ResponseEntity.ok(rankService.createRank(newRank));
     }
 
-    @GetMapping(value = "/ranks")
+    @GetMapping
     public ResponseEntity<List<Rank>> readAll() {
         return ResponseEntity.ok(rankService.getAllRanks());
     }
 
-    @GetMapping(value = "/ranks/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Rank> readById(@PathVariable long id) {
         return ResponseEntity.ok(rankService.getRankById(id));
     }
 
-    @PutMapping(value = "/ranks/{id}")
+    @PutMapping(value = "/{id}")
     public ResponseEntity<String> updateRank(@PathVariable long id, @Valid @RequestBody Rank updatedRank) {
         return ResponseEntity.ok(rankService.updateRank(id, updatedRank));
     }
 
-    @DeleteMapping(value = "/ranks/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> deleteRole(@PathVariable long id) {
         return ResponseEntity.ok(rankService.deleteRankById(id));
     }

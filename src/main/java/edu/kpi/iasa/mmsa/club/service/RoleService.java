@@ -22,7 +22,7 @@ public class RoleService {
     }
 
     public String createRole(Role newRole) {
-        if (!(roleRepository.findByRoleName(newRole.getRoleName()).getClass().getName().equals(newRole.getRoleName()))) {
+        if (!(roleRepository.findByRoleName(newRole.getRoleName()).isPresent())) {
             try {
                 roleRepository.save(newRole);
                 return "Role was successfully created";
@@ -64,8 +64,9 @@ public class RoleService {
     }
 
     public String deleteRoleById(long id) {
-        if (roleRepository.findById(id).isPresent()) {
-            roleRepository.deleteById(id);
+        Optional<Role> role = roleRepository.findById(id);
+        if (role.isPresent()) {
+            roleRepository.delete(role.get());
             return "Role "+roleRepository.findById(id).get().getRoleName()+" was successfully deleted";
         }
         throw new RoleNotFoundException();
