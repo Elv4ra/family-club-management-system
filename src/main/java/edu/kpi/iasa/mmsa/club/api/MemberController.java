@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -20,11 +19,6 @@ public class MemberController {
     @Autowired
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
-    }
-
-    @PostMapping
-    public ResponseEntity<String> createMember(@Valid @RequestBody Member member) {
-        return ResponseEntity.ok(memberService.createMember(member));
     }
 
     @GetMapping

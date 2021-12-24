@@ -16,12 +16,12 @@ public final class MemberRole {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne
     @JoinColumn(name = "id_member")
     private Member member;
 
-    @NotNull
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne
     @JoinColumn(name = "id_role")
     private Role role;
@@ -33,4 +33,6 @@ public final class MemberRole {
         this.member = member;
         this.role = role;
     }
+
+    
 }

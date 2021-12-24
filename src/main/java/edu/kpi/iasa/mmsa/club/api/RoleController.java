@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,7 +21,7 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createRole(@Valid @RequestBody Role newRole) {
+    public ResponseEntity<String> createRole(@RequestBody Role newRole) {
         return ResponseEntity.ok(roleService.createRole(newRole));
     }
 
@@ -37,7 +36,7 @@ public class RoleController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateRole(@PathVariable long id, @Valid @RequestBody Role updatedRole) {
+    public ResponseEntity<String> updateRole(@PathVariable long id, @RequestBody Role updatedRole) {
         return ResponseEntity.ok(roleService.updateRole(id, updatedRole));
     }
 

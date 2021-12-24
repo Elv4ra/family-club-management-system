@@ -5,7 +5,6 @@ import edu.kpi.iasa.mmsa.club.exception.MemberAlreadyExistsException;
 import edu.kpi.iasa.mmsa.club.exception.MemberNotFoundException;
 import edu.kpi.iasa.mmsa.club.repository.MemberRepository;
 import edu.kpi.iasa.mmsa.club.repository.model.Member;
-import org.aspectj.weaver.patterns.OrTypePattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +22,10 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String createMember(Member newMember) {
+    public Member createMember(Member newMember) {
         if (!(memberRepository.findByLogin(newMember.getLogin()).isPresent())) {
             try {
-                memberRepository.save(newMember);
-                return "Member was successfully created";
+                return memberRepository.save(newMember);
             } catch (IllegalArgumentException e) {
                 throw new InvalidInputDataException();
             }

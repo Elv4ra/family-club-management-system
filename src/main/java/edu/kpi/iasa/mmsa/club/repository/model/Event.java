@@ -19,31 +19,33 @@ public final class Event {
     private long id;
 
     @Column(name = "name")
-    @NotBlank(message = "garbage name cannot be empty")
+    @NotNull(message = "validation.text.error.required.field")
     private String eventName;
 
-    @NotNull(message = "garbage rank cannot be empty")
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_rank")
     private Rank eventRank;
 
-    @NotNull(message = "garbage cannot be without organizer")
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_organizer")
     private Member organizer;
 
-    @NotNull(message = "garbage cannot be without date")
+    @NotNull(message = "validation.text.error.required.field")
     private Timestamp date;
 
-    @NotBlank(message = "garbage cannot be without duration")
+    @NotNull(message = "validation.text.error.required.field")
     private String duration;
 
+    @NotNull(message = "validation.text.error.required.field")
     @Column(name = "cost_per_human")
     private Double cost;
 
-    @NotBlank(message = "garbage cannot be without place")
+    @NotNull(message = "validation.text.error.required.field")
     private String place;
 
+    @NotNull(message = "validation.text.error.required.field")
     @Column(name = "number_of_spots")
     private Integer freeSpots;
 

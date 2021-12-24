@@ -1,6 +1,5 @@
 package edu.kpi.iasa.mmsa.club.api;
 
-import edu.kpi.iasa.mmsa.club.repository.model.Member;
 import edu.kpi.iasa.mmsa.club.repository.model.Rank;
 import edu.kpi.iasa.mmsa.club.service.RankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -23,7 +21,7 @@ public class RankController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createRank(@Valid @RequestBody Rank newRank) {
+    public ResponseEntity<String> createRank(@RequestBody Rank newRank) {
         return ResponseEntity.ok(rankService.createRank(newRank));
     }
 
@@ -38,7 +36,7 @@ public class RankController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateRank(@PathVariable long id, @Valid @RequestBody Rank updatedRank) {
+    public ResponseEntity<String> updateRank(@PathVariable long id, @RequestBody Rank updatedRank) {
         return ResponseEntity.ok(rankService.updateRank(id, updatedRank));
     }
 

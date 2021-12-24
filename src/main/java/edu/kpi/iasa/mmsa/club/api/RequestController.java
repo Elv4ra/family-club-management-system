@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,7 +21,7 @@ public class RequestController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createRequest(@Valid @RequestBody Request request) {
+    public ResponseEntity<String> createRequest(@RequestBody Request request) {
         return ResponseEntity.ok(requestService.createRequest(request));
     }
 
@@ -47,7 +46,7 @@ public class RequestController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<String> updateRequest(@PathVariable long id, @Valid @RequestBody Request request) {
+    public ResponseEntity<String> updateRequest(@PathVariable long id, @RequestBody Request request) {
         return ResponseEntity.ok(requestService.updateRequest(id, request));
     }
 

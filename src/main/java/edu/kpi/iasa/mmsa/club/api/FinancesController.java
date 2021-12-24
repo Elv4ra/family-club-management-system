@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,7 +21,7 @@ public class FinancesController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createFinance(@Valid @RequestBody Finances finance) {
+    public ResponseEntity<String> createFinance(@RequestBody Finances finance) {
         return ResponseEntity.ok(financesService.createFinance(finance));
     }
 

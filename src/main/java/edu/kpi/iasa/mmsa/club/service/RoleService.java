@@ -71,4 +71,8 @@ public class RoleService {
         }
         throw new RoleNotFoundException();
     }
+
+    public Role getRoleByCode(String code) {
+        return roleRepository.findRoleByCode(code).orElseThrow(RoleNotFoundException::new);
+    }
 }

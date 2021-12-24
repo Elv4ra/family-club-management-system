@@ -16,16 +16,16 @@ public final class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "Request cannot be without author")
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_author")
     private Member author;
 
-    @NotNull(message = "Request must have option for changing role or rank")
+    @NotNull(message = "validation.text.error.required.field")
     @Column(name = "rank_or_role")
     private RankOrRole objectOfChanging;
 
-    @NotNull(message = "Request cannot be without description")
+    @NotNull(message = "validation.text.error.required.field")
     private String description;
 
     private Status status = Status.INPROCESS;

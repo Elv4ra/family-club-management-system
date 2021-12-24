@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
@@ -15,8 +16,9 @@ public final class Rank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull(message = "validation.text.error.required.field")
     @Column(unique = true, name = "rank_name")
-    @NotBlank(message = "Rank name cannot be empty")
     private String rankName;
 
     public Rank() {

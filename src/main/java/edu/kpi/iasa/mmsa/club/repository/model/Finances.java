@@ -16,12 +16,12 @@ public final class Finances {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne
     @JoinColumn(name = "id_member")
     private Member member;
 
-    @NotNull
+    @NotNull(message = "validation.text.error.required.field")
     @ManyToOne
     @JoinColumn(name = "id_event")
     private Event event;

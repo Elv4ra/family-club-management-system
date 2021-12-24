@@ -1,22 +1,27 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
+@Data
 @Entity
 @Table(name = "roles")
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public final class Role {
+public final class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull(message = "validation.text.error.required.field")
+    private String code;
+
     @Column(unique = true, name = "rname")
-    @NotBlank(message = "Role name cannot be empty")
+    @NotNull(message = "validation.text.error.required.field")
     private String roleName;
 
     public Role() {
@@ -26,15 +31,29 @@ public final class Role {
         this.roleName = roleName;
     }
 
-    public long getId() {
-        return id;
+    @Override
+    @Transient
+    public String getAuthority() {
+        return code;
     }
 
-    public String getRoleName() {
-        return roleName;
+    @Override
+    public boolean equals(Object o) {
+        GrantedAuthority ga = (GrantedAuthority) o;
+        return (getAuthority().equals(ga.getAuthority()));
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    @Override
+    public int hashCode() {
+        return getAuthority().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + roleName + '\'' +
+                '}';
     }
 }

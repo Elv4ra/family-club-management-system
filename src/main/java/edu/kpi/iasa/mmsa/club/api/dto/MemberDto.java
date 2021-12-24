@@ -1,0 +1,10 @@
+package edu.kpi.iasa.mmsa.club.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class MemberDto {
+    private String login;
+}
