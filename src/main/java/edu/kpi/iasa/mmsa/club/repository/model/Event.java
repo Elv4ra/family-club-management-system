@@ -1,5 +1,6 @@
 package edu.kpi.iasa.mmsa.club.repository.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -33,6 +34,7 @@ public final class Event {
     private Member organizer;
 
     @NotNull(message = "validation.text.error.required.field")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Timestamp date;
 
     @NotNull(message = "validation.text.error.required.field")
